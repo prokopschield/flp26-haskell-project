@@ -9,6 +9,7 @@ module SOLTest.CLI
 where
 
 import Options.Applicative
+import SOLTest.Filter (trimFilterId)
 import SOLTest.Types
 
 -- | Parse command-line arguments into an 'Options' record.
@@ -155,7 +156,7 @@ filterSpecParser =
 buildFilterSpec :: [String] -> [String] -> [String] -> [String] -> [String] -> [String] -> FilterSpec
 buildFilterSpec incAny excAny incCat incTag excCat excTag =
   FilterSpec
-    { fsIncludes = map ByAny incAny ++ map ByCategory incCat ++ map ByTag incTag,
-      fsExcludes = map ByAny excAny ++ map ByCategory excCat ++ map ByTag excTag,
+    { fsIncludes = map (ByAny . trimFilterId) incAny ++ map (ByCategory . trimFilterId) incCat ++ map (ByTag . trimFilterId) incTag,
+      fsExcludes = map (ByAny . trimFilterId) excAny ++ map (ByCategory . trimFilterId) excCat ++ map (ByTag . trimFilterId) excTag,
       fsUseRegex = False
     }
