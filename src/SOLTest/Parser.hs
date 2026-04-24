@@ -78,7 +78,12 @@ emptyHeader =
 --
 -- FLP: Implement this function.
 splitHeaderBody :: String -> ([String], String)
-splitHeaderBody content = undefined
+splitHeaderBody content =
+  let ls = lines content
+      (header, rest) = break (all isSpace) ls
+   in case rest of
+        [] -> (header, "")
+        (_ : body) -> (header, unlines body)
 
 -- ---------------------------------------------------------------------------
 -- Header line parsing
