@@ -1,12 +1,14 @@
 -- | Discovering @.test@ files and their companion @.in@\/@.out@ files.
 module SOLTest.Discovery (discoverTests) where
 
+import Control.Monad (forM)
 import SOLTest.Types
 import System.Directory
-  ( doesFileExist,
+  ( doesDirectoryExist,
+    doesFileExist,
     listDirectory,
   )
-import System.FilePath (replaceExtension, takeBaseName, (</>))
+import System.FilePath (replaceExtension, takeBaseName, takeExtension, (</>))
 
 -- | Discover all @.test@ files in a directory.
 --
@@ -21,8 +23,20 @@ discoverTests :: Bool -> FilePath -> IO [TestCaseFile]
 discoverTests recursive dir = do
   entries <- listDirectory dir
   let fullPaths = map (dir </>) entries
-  -- ???
-  return [] -- replace [] with your list of discovered TestCaseFile
+
+  tests <- forM fullPaths $ \path -> do
+    isDir <- doesDirectoryExist path
+
+    case () of
+      _
+        | isDir && recursive -> discoverTests recursive path
+        | not isDir && takeExtension path == ".test" ->
+            do
+              files <- findCompanionFiles path
+              return [files]
+        | otherwise -> return []
+
+  return (concat tests)
 
 -- | Build a 'TestCaseFile' for a given @.test@ file path, checking for
 -- companion @.in@ and @.out@ files in the same directory.
