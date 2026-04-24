@@ -173,7 +173,16 @@ withTempSource content action =
 --
 -- FLP: Implement this function. It will start similarly to @withTempSource@.
 runDiffOnOutput :: String -> FilePath -> IO (TestResult, Maybe String)
-runDiffOnOutput iOut outFile = undefined
+runDiffOnOutput iOut outFile =
+  withSystemTempFile "sol26.out" $ \tmpFilePath tmpFileHandle -> do
+    hPutStr tmpFileHandle iOut
+    hClose tmpFileHandle
+
+    (exitCode, diff) <- runDiff tmpFilePath outFile
+
+    if exitCode == ExitSuccess
+      then return (Passed, Nothing)
+      else return (DiffFail, Just diff)
 
 -- | Ensure an executable path is provided and the file is executable,
 -- then run an action with it.  Returns 'Left' 'CannotExecute' if the
