@@ -96,8 +96,30 @@ parseHeaderLine hdr line
   | "*** " `isPrefixOf` line =
       let val = trim (drop 4 line)
        in Right hdr {phDescription = Just val}
-  -- ???
+  | "+++ " `isPrefixOf` line =
+      let val = trim (drop 4 line)
+       in Right hdr {phCategory = Just val}
+  | "--- " `isPrefixOf` line =
+      let val = trim (drop 4 line)
+       in Right hdr {phTags = phTags hdr ++ [val]}
+  | ">>> " `isPrefixOf` line =
+      case stringToInt (trim (drop 4 line)) of
+        Nothing -> Left "invalid >>> value"
+        Just val -> Right hdr {phWeight = Just val}
+  | "!C! " `isPrefixOf` line =
+      case stringToInt (trim (drop 4 line)) of
+        Nothing -> Left "invalid !C! value"
+        Just val -> Right hdr {phParserCodes = phParserCodes hdr ++ [val]}
+  | "!I! " `isPrefixOf` line =
+      case stringToInt (trim (drop 4 line)) of
+        Nothing -> Left "invalid !I! value"
+        Just val -> Right hdr {phInterpreterCodes = phInterpreterCodes hdr ++ [val]}
   | otherwise = Right hdr -- unknown or comment line: skip
+
+stringToInt :: String -> Maybe Int
+stringToInt s = case reads s of
+  [(n, "")] -> Just n
+  _ -> Nothing
 
 -- | Parse all header lines into a 'ParsedHeader'.
 --
