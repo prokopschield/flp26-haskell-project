@@ -16,6 +16,7 @@ module SOLTest.Filter
 where
 
 import Data.Char (isSpace)
+import Data.List (partition)
 import SOLTest.Types
 
 -- ---------------------------------------------------------------------------
@@ -36,7 +37,13 @@ filterTests ::
   FilterSpec ->
   [TestCaseDefinition] ->
   ([TestCaseDefinition], [TestCaseDefinition])
-filterTests spec tests = undefined
+filterTests spec tests =
+  let includes = fsIncludes spec
+      useRegex = fsUseRegex spec
+      excludes = fsExcludes spec
+      includeOK test = null includes || matchesAny useRegex includes test
+      keep test = includeOK test && not (matchesAny useRegex excludes test)
+   in partition keep tests
 
 -- | Check whether a test matches at least one criterion in the list.
 matchesAny :: Bool -> [FilterCriterion] -> TestCaseDefinition -> Bool
