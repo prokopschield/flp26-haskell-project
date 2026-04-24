@@ -108,7 +108,19 @@ computeStats ::
   -- | Category reports (Nothing in dry-run mode).
   Maybe (Map String CategoryReport) ->
   TestStats
-computeStats foundCount loadedCount selectedCount mCategoryResults = undefined
+computeStats foundCount loadedCount selectedCount mCategoryResults =
+  let (pass, hist) = case mCategoryResults of
+        Nothing -> (0, emptyHistogram)
+        Just res -> (countPassed res, computeHistogram res)
+   in TestStats
+        { tsFoundTestFiles = foundCount,
+          tsLoadedTests = loadedCount,
+          tsSelectedTests = selectedCount,
+          tsPassedTests = pass,
+          tsHistogram = hist
+        }
+  where
+    countPassed = sum . map (Map.size . Map.filter ((== Passed) . tcrResult) . crTestResults) . Map.elems
 
 -- ---------------------------------------------------------------------------
 -- Histogram
