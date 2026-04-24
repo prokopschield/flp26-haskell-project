@@ -100,7 +100,16 @@ computeStats foundCount loadedCount selectedCount mCategoryResults = undefined
 --
 -- FLP: Implement this function.
 computeHistogram :: Map String CategoryReport -> Map String Int
-computeHistogram categories = undefined
+computeHistogram = Map.foldl addCategory emptyHistogram
+  where
+    addCategory hist rep =
+      let nTests = Map.size (crTestResults rep)
+          rate = if nTests == 0 then 0 else fromIntegral passedTests / fromIntegral nTests
+          passedTests = Map.size (Map.filter ((== Passed) . tcrResult) (crTestResults rep))
+       in Map.adjust (+ 1) (rateToBin rate) hist
+
+emptyHistogram :: Map String Int
+emptyHistogram = Map.fromList [(rateToBin (fromIntegral n / 10), 0) | n <- [0 .. 9 :: Int]]
 
 -- | Map a pass rate in @[0, 1]@ to a histogram bin key.
 --
