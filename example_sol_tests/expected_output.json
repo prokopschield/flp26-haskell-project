@@ -3,104 +3,65 @@
     {
       "category": "BASIC",
       "description": "This test will pass",
-      "expected_interpreter_exit_codes": [
-        0,
-        42
-      ],
-      "expected_parser_exit_codes": [
-        0
-      ],
+      "expected_interpreter_exit_codes": [0, 42],
+      "expected_parser_exit_codes": [0],
       "expected_stdout_file": null,
       "name": "ex1",
       "points": 2,
       "stdin_file": null,
-      "tags": [
-        "easy",
-        "mustwork"
-      ],
+      "tags": ["easy", "mustwork"],
       "test_source_path": "example_sol_tests/ex1.test",
       "test_type": 2
     },
     {
       "category": "BASIC",
       "description": "This test will also pass",
-      "expected_interpreter_exit_codes": [
-        0,
-        42
-      ],
-      "expected_parser_exit_codes": [
-        0
-      ],
+      "expected_interpreter_exit_codes": [0, 42],
+      "expected_parser_exit_codes": [0],
       "expected_stdout_file": null,
       "name": "ex4",
       "points": 2,
       "stdin_file": null,
-      "tags": [
-        "easy",
-        "mustwork"
-      ],
+      "tags": ["easy", "mustwork"],
       "test_source_path": "example_sol_tests/ex4.test",
       "test_type": 2
     },
     {
       "category": "SADGE",
       "description": "This test will not pass (invalid interpreter exit code)",
-      "expected_interpreter_exit_codes": [
-        0,
-        42
-      ],
-      "expected_parser_exit_codes": [
-        0
-      ],
+      "expected_interpreter_exit_codes": [0, 42],
+      "expected_parser_exit_codes": [0],
       "expected_stdout_file": null,
       "name": "ex5",
       "points": 2,
       "stdin_file": null,
-      "tags": [
-        "easy",
-        "mustwork"
-      ],
+      "tags": ["easy", "mustwork"],
       "test_source_path": "example_sol_tests/ex5.test",
       "test_type": 2
     },
     {
       "category": "SADGE",
       "description": "This test will not pass (invalid interpreter output)",
-      "expected_interpreter_exit_codes": [
-        0,
-        42
-      ],
-      "expected_parser_exit_codes": [
-        0
-      ],
+      "expected_interpreter_exit_codes": [0, 42],
+      "expected_parser_exit_codes": [0],
       "expected_stdout_file": "example_sol_tests/ex6.out",
       "name": "ex6",
       "points": 2,
       "stdin_file": null,
-      "tags": [
-        "easy",
-        "mustwork"
-      ],
+      "tags": ["easy", "mustwork"],
       "test_source_path": "example_sol_tests/ex6.test",
       "test_type": 2
     },
     {
       "category": "SADGE",
       "description": "This test passes",
-      "expected_interpreter_exit_codes": [
-        0
-      ],
-      "expected_parser_exit_codes": [
-        0
-      ],
+      "expected_interpreter_exit_codes": [0],
+      "expected_parser_exit_codes": [0],
       "expected_stdout_file": "example_sol_tests/ex7.out",
       "name": "ex7",
       "points": 2,
       "stdin_file": null,
-      "tags": [
-        "easy",
-        "mustwork"
-      ],
+      "tags": ["easy", "mustwork"],
       "test_source_path": "example_sol_tests/ex7.test",
       "test_type": 2
     },
@@ -108,9 +69,7 @@
       "category": "SADGE",
       "description": "This is a passing parse-only test",
       "expected_interpreter_exit_codes": null,
-      "expected_parser_exit_codes": [
-        0
-      ],
+      "expected_parser_exit_codes": [0],
       "expected_stdout_file": null,
       "name": "ex8",
       "points": 121,
@@ -123,9 +82,7 @@
       "category": "SADGE",
       "description": "This is a failing parse-only test",
       "expected_interpreter_exit_codes": null,
-      "expected_parser_exit_codes": [
-        0
-      ],
+      "expected_parser_exit_codes": [0],
       "expected_stdout_file": null,
       "name": "ex9",
       "points": 121,
@@ -137,12 +94,8 @@
     {
       "category": "BASIC",
       "description": "This test uses input, it will pass",
-      "expected_interpreter_exit_codes": [
-        0
-      ],
-      "expected_parser_exit_codes": [
-        0
-      ],
+      "expected_interpreter_exit_codes": [0],
+      "expected_parser_exit_codes": [0],
       "expected_stdout_file": "example_sol_tests/ex10.out",
       "name": "ex10",
       "points": 10,
@@ -154,12 +107,8 @@
     {
       "category": "BASIC",
       "description": "This test uses input, it will not pass",
-      "expected_interpreter_exit_codes": [
-        0
-      ],
-      "expected_parser_exit_codes": [
-        0
-      ],
+      "expected_interpreter_exit_codes": [0],
+      "expected_parser_exit_codes": [0],
       "expected_stdout_file": "example_sol_tests/ex11.out",
       "name": "ex11",
       "points": 10,
