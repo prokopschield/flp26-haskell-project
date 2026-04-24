@@ -18,7 +18,7 @@ where
 import Control.Exception (IOException, try)
 import Data.Maybe (fromMaybe)
 import SOLTest.Types
-import System.Directory (doesFileExist)
+import System.Directory (Permissions (executable), doesFileExist, getPermissions)
 import System.Exit (ExitCode (..))
 import System.IO (hClose, hPutStr)
 import System.IO.Temp (withSystemTempFile)
@@ -216,9 +216,15 @@ checkExecutable path = do
   result <- try (doesFileExist path) :: IO (Either IOException Bool)
   case result of
     Left err -> return (Just (UnexecutedReason CannotExecute (Just (show err))))
-    Right False -> undefined -- ???
-    Right True -> undefined -- ???
-  return Nothing -- this probably won't be here
+    Right False -> return (Just (UnexecutedReason CannotExecute (Just ("File doesn't exist: " ++ path))))
+    Right True -> do
+      permsResult <- try (getPermissions path) :: IO (Either IOException Permissions)
+      case permsResult of
+        Left err -> return (Just (UnexecutedReason CannotExecute (Just (show err))))
+        Right perms
+          | executable perms -> return Nothing
+          | otherwise ->
+              return (Just (UnexecutedReason CannotExecute (Just ("File is not executable: " ++ path))))
 
 -- | Convert 'ExitCode' to an 'Int'.
 exitCodeToInt :: ExitCode -> Int
