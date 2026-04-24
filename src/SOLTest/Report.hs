@@ -63,7 +63,33 @@ groupByCategory ::
   [TestCaseDefinition] ->
   Map String TestCaseReport ->
   Map String CategoryReport
-groupByCategory definitions results = undefined
+groupByCategory definitions results =
+  let definitionsByName = Map.fromList [(tcdName def, def) | def <- definitions]
+      addResult acc testName report =
+        case Map.lookup testName definitionsByName of
+          Nothing -> acc
+          Just def ->
+            let category = tcdCategory def
+                totalPoints = tcdPoints def
+                passedPoints =
+                  if tcrResult report == Passed
+                    then tcdPoints def
+                    else 0
+                categoryReport =
+                  CategoryReport
+                    { crTotalPoints = totalPoints,
+                      crPassedPoints = passedPoints,
+                      crTestResults = Map.singleton testName report
+                    }
+             in Map.insertWith mergeCategory category categoryReport acc
+   in Map.foldlWithKey' addResult Map.empty results
+  where
+    mergeCategory new old =
+      CategoryReport
+        { crTotalPoints = crTotalPoints old + crTotalPoints new,
+          crPassedPoints = crPassedPoints old + crPassedPoints new,
+          crTestResults = Map.union (crTestResults old) (crTestResults new)
+        }
 
 -- ---------------------------------------------------------------------------
 -- Statistics
