@@ -157,7 +157,12 @@ checkInterpreterResult ::
   -- | Path to the @.out@ file, if present.
   Maybe FilePath ->
   IO (TestResult, Maybe String)
-checkInterpreterResult actualCode expectedCodes iOut mOutFile = undefined
+checkInterpreterResult actualCode expectedCodes iOut mOutFile
+  | actualCode `notElem` expectedCodes = return (IntFail, Nothing)
+  | actualCode /= 0 = return (Passed, Nothing)
+  | otherwise = case mOutFile of
+      Nothing -> return (Passed, Nothing)
+      Just outFile -> runDiffOnOutput iOut outFile
 
 -- | Write a string to a temporary file and pass its path to an action.
 -- The file is deleted when the action returns.
