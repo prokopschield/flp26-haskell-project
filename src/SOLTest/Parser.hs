@@ -212,7 +212,16 @@ parseTestFile tcf content = do
 --
 -- FLP: Implement this function.
 buildExitCodes :: TestCaseType -> ParsedHeader -> (Maybe [Int], Maybe [Int])
-buildExitCodes = undefined
+buildExitCodes testType hdr =
+  case testType of
+    ParseOnly -> (Just (phParserCodes hdr), Nothing)
+    ExecuteOnly -> (Nothing, Just (phInterpreterCodes hdr))
+    Combined ->
+      ( if null (phParserCodes hdr)
+          then Nothing
+          else Just (phParserCodes hdr),
+        Just (phInterpreterCodes hdr)
+      )
 
 -- ---------------------------------------------------------------------------
 -- Utilities
